@@ -74,17 +74,9 @@ end
 
 class Sentence
 	
-	attr_reader   :sentence
-  attr_accessor :experiment
-  attr_accessor :subject
-  attr_accessor :item
-  attr_accessor :condition
-  attr_reader   :regions
-  attr_accessor :sentence_number
-  attr_accessor :list_position
-  attr_accessor :reading_times
-  attr_accessor :log_reading_times
-  attr_accessor :accuracy
+	attr_reader   :sentence, :regions
+  attr_accessor :experiment, :subject, :item, :condition, :sentence_number
+  attr_accessor :list_position, :reading_times, :log_reading_times, :accuracy
 
   def initialize
     @sentence = []
