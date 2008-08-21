@@ -13,6 +13,7 @@ class Experiment
 
     Dir.foreach(data_directory) do |file|
       if file =~ /(\d+)\.dat/
+        puts file
         File.open(data_directory + file) do |current_file|
           sentence = Sentence.new
           list_position = 0
@@ -61,6 +62,7 @@ class Experiment
 
   def to_file(file)
     File.new(file, "w+").puts self
+    puts "Created #{file}"
   end
 
   protected
