@@ -68,16 +68,7 @@ class Experiment
 
   protected
   def cols(s, word)
-    tmp_col = {}
-    @columns.each do |col|
-      if [s[col]].flatten.length <= 1
-        tmp_col[col] = ([s[col]] * s[:words].length)
-      else
-        tmp_col[col] = s[col]
-      end
-    end
-    
-    @columns.map {|col| tmp_col[col][word]}
+    @columns.map {|col| s[col].class == Array ? s[col][word] : s[col]}
   end
     
 end
