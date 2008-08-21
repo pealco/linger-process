@@ -1,8 +1,5 @@
 # linger-process.rb by Pedro Alcocer
 
-#PROBLEMS: doesn't show condition and doesn't expand factors correctly
-
-
 class Experiment
 
   attr_reader :sentences
