@@ -136,7 +136,7 @@ class Sentence
   end
 
   def condition
-    @attributes[:condition] == "-" ? @attributes[:condition] = "NA" : @attributes[:condition]
+    @attributes[:condition] = "NA" if @attributes[:condition] == "-" 
   end
 
   def word_positions
