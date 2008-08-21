@@ -32,10 +32,8 @@ class Experiment
                 sentence[:item]           = columns[2]
                 sentence[:condition]      = columns[3]
                 sentence[:factors]        = self.factors(sentence[:condition])
-                sentence[:accuracy]       = columns[6]
-                
-                list_position += 1
-                sentence[:list_position]  = list_position
+                sentence[:accuracy]       = columns[6] 
+                sentence[:list_position]  = (list_position += 1)
 
                 @sentences << sentence
                 sentence = Sentence.new
@@ -53,7 +51,6 @@ class Experiment
 
   def to_s
     out = (@columns.map {|column| column.to_s}).join("\t") + "\n" # The header line.
-    #out = ""
     @sentences.each do |s|
       s.compute
       s[:words].length.times do |word|
@@ -61,12 +58,6 @@ class Experiment
         out << line.join("\t") + "\n"
       end
     end
-    
-    # this could be rewritten w/ reduce
-   #@sentences.reduce("") do |out, s|
-   #  
-   #end
-    
     
     return out
   end
@@ -87,12 +78,8 @@ class Experiment
     end
     
     @columns.map {|col| tmp_col[col][word]}
-    
-    #tmp_col.map {|col, value| value[word] }
   end
-  
-  
-  
+    
 end
 
 class Sentence

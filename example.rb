@@ -1,3 +1,4 @@
+#require("profile")
 require("linger-process.rb")
 
 # A new Experiment object takes two arguments:
@@ -15,7 +16,7 @@ factors = { "TNN" => %w(RC N U),
             "QNN" => %w(HN N U),
             "QMN" => %w(HN M G)}
 
-columns = [:subject, :item, :conditions, :factors, :regions, 
+columns = [:subject, :item, :condition, :factors, :regions, 
            :reading_times, :log_reading_times, :words, :word_lengths, 
            :word_positions, :experiment, :list_position, :accuracy]
 
