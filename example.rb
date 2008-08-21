@@ -15,12 +15,12 @@ factors = { "TNN" => %w(RC N U),
             "QNN" => %w(HN N U),
             "QMN" => %w(HN M G)}
 
-experiment = Experiment.new(experiment_names, factors)
+experiment = Experiment.new(experiment_names, factors, "./data/")
 
 # All processing is done when the object is created. There are two 
 # options for outputting the processed data. You can either output
 # it to STD_OUT (to check that everything went smoothly), or you can
 # save it to a file.
 
-puts experiment                # to STD_OUT
+#puts experiment                # to STD_OUT
 experiment.to_file("data.txt") # to a file called data.txt
