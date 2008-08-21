@@ -48,7 +48,7 @@ class Experiment
   end
 
   def factors(condition)
-    @factors[condition].nil? ? %w(NA NA NA) : @factors[condition]
+    @factors[condition].nil? ? %w(NA NA NA).join("\t") : @factors[condition].join("\t")
   end
 
   def to_s
@@ -80,7 +80,7 @@ class Experiment
     tmp_col = {}
     @columns.each do |col|
       if [s[col]].flatten.length <= 1
-        tmp_col[col] = ([s[col]] * s[:words].length).flatten
+        tmp_col[col] = ([s[col]] * s[:words].length)
       else
         tmp_col[col] = s[col]
       end
@@ -114,12 +114,12 @@ class Sentence
                    :accuracy          => nil}
   end
   
-  def [](arg)
-    @attributes[arg]
+  def [](key)
+    @attributes[key]
   end
   
-  def []=(arg1, arg2)
-    @attributes[arg1] = arg2
+  def []=(key, value)
+    @attributes[key] = value
   end
   
   def compute
@@ -136,7 +136,7 @@ class Sentence
   end
 
   def condition
-    @attributes[:condition] == "-" ? "NA" : @attributes[:condition]
+    @attributes[:condition] == "-" ? @attributes[:condition] = "NA" : @attributes[:condition]
   end
 
   def word_positions
