@@ -1,4 +1,4 @@
-require("process_linger_data.rb")
+require("linger-process.rb")
 
 # A new Experiment object takes two arguments:
 #   (1) an Array that specifies the names of the experiment(s)
@@ -15,12 +15,17 @@ factors = { "TNN" => %w(RC N U),
             "QNN" => %w(HN N U),
             "QMN" => %w(HN M G)}
 
-experiment = Experiment.new(experiment_names, factors)
+columns = [:subject, :item, :conditions, :factors, :regions, 
+           :reading_times, :log_reading_times, :words, :word_lengths, 
+           :word_positions, :experiment, :list_position, :accuracy]
+
+experiment = Experiment.new(experiment_names, factors, "data/", columns)
 
 # All processing is done when the object is created. There are two 
 # options for outputting the processed data. You can either output
 # it to STD_OUT (to check that everything went smoothly), or you can
 # save it to a file.
 
-puts experiment                # to STD_OUT
+#p experiment
+#puts experiment                # to STD_OUT
 experiment.to_file("data.txt") # to a file called data.txt

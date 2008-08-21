@@ -1,12 +1,17 @@
 # linger-process.rb by Pedro Alcocer
 
+#PROBLEMS: doesn't show condition and doesn't expand factors correctly
+
+
 class Experiment
 
   attr_reader :sentences
 
-  def initialize(experiment, factors, data_directory="../data/")
-    @experiment = ([experiment] + ["filler"]).flatten
+  def initialize(experiment, factors, data_directory="../data/", columns = [:words, :word_lengths, :word_positions, :regions, :experiment, :subject, :item, :condition, :sentence_number, :list_position, :reading_times, :log_reading_times, :accuracy])
+    @experiments = ([experiment] + ["filler"]).flatten
     @factors = factors
+    @columns = columns
+    
     @sentences = []
 
     Dir.foreach(data_directory) do |file|
@@ -16,19 +21,21 @@ class Experiment
           list_position = 0
           while line = current_file.gets
             columns = line.split
-						if @experiment.any? {|exp| columns[1] == exp}
+						if @experiments.any? {|exp| columns[1] == exp}
               if columns[4] != "?"
-                sentence << columns[5]
-                sentence.regions = columns[6]
-                sentence.reading_times << columns[7]
+                sentence[:words]         << columns[5]
+                sentence[:regions]       << columns[6]
+                sentence[:reading_times] << columns[7]
               elsif columns[4] == "?"
-                sentence.subject    = columns[0]
-                sentence.experiment = columns[1]
-                sentence.item       = columns[2]
-                sentence.condition  = columns[3]
-                sentence.accuracy   = columns[6]
+                sentence[:subject]        = columns[0]
+                sentence[:experiment]     = columns[1]
+                sentence[:item]           = columns[2]
+                sentence[:condition]      = columns[3]
+                sentence[:factors]        = self.factors(sentence[:condition])
+                sentence[:accuracy]       = columns[6]
+                
                 list_position += 1
-                sentence.list_position = list_position
+                sentence[:list_position]  = list_position
 
                 @sentences << sentence
                 sentence = Sentence.new
@@ -44,18 +51,23 @@ class Experiment
     @factors[condition].nil? ? %w(NA NA NA) : @factors[condition]
   end
 
-  def <<(sentence)
-    @sentences << sentence
-  end
-
   def to_s
-    out = ""
+    out = (@columns.map {|column| column.to_s}).join("\t") + "\n" # The header line.
+    #out = ""
     @sentences.each do |s|
-      s.length.times do |word|
+      s.compute
+      s[:words].length.times do |word|
         line = self.cols(s,word)
         out << line.join("\t") + "\n"
       end
     end
+    
+    # this could be rewritten w/ reduce
+   #@sentences.reduce("") do |out, s|
+   #  
+   #end
+    
+    
     return out
   end
 
@@ -64,65 +76,83 @@ class Experiment
   end
 
   protected
-  def cols(s,word)
-    [s.subject, s.item, s.condition, factors(s.condition), s.regions[word], 
-     s.reading_times[word], s.log_reading_times[word], s.sentence[word], 
-     s.word_lengths[word], s.word_positions[word], s.experiment, s.list_position, s.accuracy]
+  def cols(s, word)
+    tmp_col = {}
+    @columns.each do |col|
+      if [s[col]].flatten.length <= 1
+        tmp_col[col] = ([s[col]] * s[:words].length).flatten
+      else
+        tmp_col[col] = s[col]
+      end
+    end
+    
+    @columns.map {|col| tmp_col[col][word]}
+    
+    #tmp_col.map {|col, value| value[word] }
   end
-
+  
+  
+  
 end
 
 class Sentence
-	
-	attr_reader   :sentence, :regions
-  attr_accessor :experiment, :subject, :item, :condition, :sentence_number
-  attr_accessor :list_position, :reading_times, :log_reading_times, :accuracy
-
+  
   def initialize
-    @sentence = []
-    @word_lengths = []
-    @regions = []
-    @reading_times = []
-    @log_reading_times = []
+    @attributes = {:words             => [],
+                   :word_lengths      => nil,
+                   :word_positions    => nil,
+                   :regions           => [], 
+                   :experiment        => nil, 
+                   :subject           => nil, 
+                   :item              => nil, 
+                   :condition         => nil, 
+                   :factors           => nil,
+                   :sentence_number   => nil,
+                   :list_position     => nil, 
+                   :reading_times     => [], 
+                   :log_reading_times => [], 
+                   :accuracy          => nil}
   end
-
-  def <<(word)
-    @sentence << word
-    @word_lengths << word.length
+  
+  def [](arg)
+    @attributes[arg]
+  end
+  
+  def []=(arg1, arg2)
+    @attributes[arg1] = arg2
+  end
+  
+  def compute
+    self.word_lengths
+    self.condition
+    self.word_positions
+    self.regions
+    self.log_reading_times
+  end
+  
+  protected
+  def word_lengths
+    @attributes[:word_lengths] = @attributes[:words].map {|word| word.length}
   end
 
   def condition
-    @condition == "-" ? "NA" : @condition
-  end
-
-  def log_reading_times
-    Math::log(@reading_times).to_i
-  end
-
-  def word_lengths
-    word_lengths = []
-    @sentence.each {|word| word_lengths << word.length}
-    word_lengths
+    @attributes[:condition] == "-" ? "NA" : @attributes[:condition]
   end
 
   def word_positions
-    (1..@sentence.length).to_a
+    @attributes[:word_positions] = (1..@attributes[:words].length).to_a
   end
 
-  def regions=(region)
-    if region == "-" or region == "NA"
-      @regions << "NA"
-    else
-      @regions << region[0,1]
-    end
+  def regions
+    @attributes[:regions] = @attributes[:regions].map {|region| (region == "-" or region == "NA") ? "NA" : region[0,1]}
   end
-
+  
   def log_reading_times
-    @reading_times.map {|reading_time| Math::log(reading_time)}
+    @attributes[:log_reading_times] = @attributes[:reading_times].map {|rt| Math::log(rt)}
   end
-
+  
   def length
-    @sentence.length
+    @attributes[:words].length
   end
 
 end
