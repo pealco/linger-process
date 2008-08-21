@@ -1,4 +1,4 @@
-require("process_linger_data.rb")
+require("linger-process.rb")
 
 # A new Experiment object takes two arguments:
 #   (1) an Array that specifies the names of the experiment(s)
