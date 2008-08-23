@@ -4,7 +4,7 @@ class Experiment
 
   attr_reader :sentences
 
-  def initialize(experiment, factors, data_directory="../data/", columns = [:words, :word_lengths, :word_positions, :regions, :experiment, :subject, :item, :condition, :sentence_number, :list_position, :reading_times, :log_reading_times, :accuracy])
+  def initialize(experiment, factors, data_directory="./data/", columns = [:words, :word_lengths, :word_positions, :regions, :experiment, :subject, :item, :condition, :sentence_number, :list_position, :reading_times, :log_reading_times, :accuracy])
     @experiments = ([experiment] + ["filler"]).flatten
     @factors = factors
     @columns = columns
@@ -48,11 +48,11 @@ class Experiment
   end
 
   def to_s
-    out = (@columns.map {|column| column.to_s}).join("\t") + "\n" # The header line.
+    out = (@columns.map {|column| column.to_s}).join("\t") + "\n" # The header line. Doesn't expand factors.
     @sentences.each do |s|
       s.compute
-      s[:words].length.times do |word|
-        line = self.cols(s,word)
+      s.length.times do |word|
+        line = self.output_columns(s, word)
         out << line.join("\t") + "\n"
       end
     end
@@ -66,8 +66,8 @@ class Experiment
   end
 
   protected
-  def cols(s, word)
-    @columns.map {|col| s[col].class == Array ? s[col][word] : s[col]}
+  def output_columns(s, word)
+    @columns.map {|column| s[column].class == Array ? s[column][word] : s[column]}
   end
     
 end
@@ -107,6 +107,10 @@ class Sentence
     self.log_reading_times
   end
   
+  def length
+    @attributes[:words].length
+  end
+  
   protected
   def word_lengths
     @attributes[:word_lengths] = @attributes[:words].map {|word| word.length}
@@ -126,10 +130,6 @@ class Sentence
   
   def log_reading_times
     @attributes[:log_reading_times] = @attributes[:reading_times].map {|rt| Math::log(rt)}
-  end
-  
-  def length
-    @attributes[:words].length
   end
 
 end
