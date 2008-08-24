@@ -1,0 +1,60 @@
+linger-process
+    by Pedro Alcocer
+    https://github.com/pealco/linger-process
+
+== DESCRIPTION:
+
+This is a set of classes for processing Linger reading-time data
+into a more useful format to be used by R.
+
+== FEATURES/PROBLEMS:
+
+Features:
+  * Makes expanding conditions into factors very easy.
+  * The order in which columns are output is customizable.
+
+Problems:
+  * The columns header that is currently output does not correctly
+    output the factor names. This means that in R you must use header=F
+    in read.table (the default).
+
+== SYNOPSIS:
+
+  See example.rb
+
+== REQUIREMENTS:
+
+  * This was created used ruby 1.8.7, but anything >= 1.8.6 should work fine.
+
+== INSTALL:
+
+  * To "install" just copy linger-process.rb into your working directory and
+    then "require" it in your analysis script. See example.rb for an example
+    of such a script.
+  
+  * This will eventually be packaged as a gem. 
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2008 FIXME (different license?)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
