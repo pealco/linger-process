@@ -19,18 +19,18 @@ factors = { "TNN" => %w(RC N U),
             "QNN" => %w(HN N U),
             "QMN" => %w(HN M G)}
 
-directory = "./"
+data_directory = "./example-input-data/"
 
 columns = [:experiment, :subject, :item, :condition, :factors, :regions, 
            :reading_times, :log_reading_times, :words, :word_lengths, 
            :word_positions, :list_position, :accuracy]
 
-experiment = Experiment.new(experiment_names, factors, directory, columns)
+experiment = Experiment.new(experiment_names, factors, data_directory, columns)
 
 # All processing is done within the object. There are two 
 # options for outputting the processed data. You can either output
 # it to STD_OUT (to check that everything went smoothly), or you can
 # save it to a file.
 
-#puts experiment                # to STD_OUT
-experiment.to_file("example-data.txt") # to a file called data.txt
+#puts experiment                # to STDOUT
+experiment.to_file("example-output-data.txt") # to a file called data.txt
