@@ -19,11 +19,11 @@ factors = { "TNN" => %w(RC N U),
             "QNN" => %w(HN N U),
             "QMN" => %w(HN M G)}
 
-directory = "./data/"
+directory = "./"
 
-columns = [:subject, :item, :condition, :factors, :regions, 
+columns = [:experiment, :subject, :item, :condition, :factors, :regions, 
            :reading_times, :log_reading_times, :words, :word_lengths, 
-           :word_positions, :experiment, :list_position, :accuracy]
+           :word_positions, :list_position, :accuracy]
 
 experiment = Experiment.new(experiment_names, factors, directory, columns)
 
@@ -33,4 +33,4 @@ experiment = Experiment.new(experiment_names, factors, directory, columns)
 # save it to a file.
 
 #puts experiment                # to STD_OUT
-experiment.to_file("data.txt") # to a file called data.txt
+experiment.to_file("example-data.txt") # to a file called data.txt
