@@ -24,7 +24,7 @@ Problems:
 
 == REQUIREMENTS:
 
-  * This was created used ruby 1.8.7, but anything >= 1.8.6 should work fine.
+  * This was created using ruby 1.8.7, but anything >= 1.8.6 should work fine.
 
 == INSTALL:
 
