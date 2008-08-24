@@ -1,5 +1,3 @@
-# linger-process.rb by Pedro Alcocer
-
 class Experiment
 
   attr_reader :sentences
