@@ -29,7 +29,7 @@ columns = [:experiment, :subject, :item, :condition, :factors, :regions,
            :reading_times, :log_reading_times, :words, :word_lengths, 
            :word_positions, :list_position, :accuracy]
 
-experiment = Experiment.new(experiment_names, factors, data_directory, columns)
+experiment = Experiment.new(experiment_names, factors, :dir => data_directory, :columns => columns)
 
 # All processing is done within the object. There are two 
 # options for outputting the processed data. You can either output

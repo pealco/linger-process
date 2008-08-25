@@ -2,7 +2,15 @@ class Experiment
 
   attr_reader :sentences
 
-  def initialize(experiment, factors, data_directory="./data/", columns = [:words, :word_lengths, :word_positions, :regions, :experiment, :subject, :item, :condition, :sentence_number, :list_position, :reading_times, :log_reading_times, :accuracy])
+  def initialize(experiment, factors, options = {})
+    
+    default_dir = "./data/"
+    default_columns = [:words, :word_lengths, :word_positions, :regions, :experiment, 
+                :subject, :item, :condition, :sentence_number, :list_position, 
+                :reading_times, :log_reading_times, :accuracy]
+                
+    data_directory = options.fetch(:dir, default_dir)
+    columns = options.fetch(:columns, default_columns)
     @experiments = ([experiment] + ["filler"]).flatten
     @factors = factors
     @columns = columns
